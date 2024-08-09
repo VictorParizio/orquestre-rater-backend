@@ -2,8 +2,17 @@ import { prisma } from "../config/prisma";
 import { CreateUserInput } from "../controllers/user.controller";
 
 export const findUserByEmail = async (email: string) => {
-  const user = await prisma.user.findUnique({ where: { email } });
-  return user;
+  return await prisma.user.findUnique({
+    where: { email },
+    select: { email: true },
+  });
+};
+
+export const findUserByUserName = async (userName: string) => {
+  return await prisma.user.findUnique({
+    where: { userName },
+    select: { userName: true },
+  });
 };
 
 export const createUser = async (data: CreateUserInput) => {
@@ -16,5 +25,6 @@ export const createUser = async (data: CreateUserInput) => {
       email: true,
     },
   });
+
   return newUser;
 };
