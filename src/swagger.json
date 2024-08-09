@@ -1,0 +1,329 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Rater",
+    "description": "Servidor para gerenciar usuários e autenticação. Neste documento você poderá consultar os end-points da API e também testar todas as rotas. Não se esqueça de se registar e ativar a autenticação",
+    "contact": {
+      "name": "Victor Parizio",
+      "email": "victorparizio@hotmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "basePath": "/",
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor Local"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "Register"
+        ],
+        "summary": "Registra um novo usuário",
+        "description": "Rota responsável por registar um novo usuário",
+        "requestBody": {
+          "description": "Dados necessários para acessar as áreas restritas do site",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestRegister"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário cadastrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/responseRegister"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Usuário ou Email já Cadastrado"
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Dá acesso ao usuário",
+        "description": "Rota responsável por dar acesso a um usuário",
+        "requestBody": {
+          "description": "Dados necessários para acessar as áreas restritas do site",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ResponseLogin"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email ou senha invalido"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      }
+    },
+    "/:id": {
+      "put": {
+        "tags": [
+          "Update"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Edita o perfil do usuário",
+        "description": "Rota responsável por editar o perfil do usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Id do usuário"
+          }
+        ],
+        "requestBody": {
+          "description": "Dados necessários para editar o perfil do usuário",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestUpdateUser"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {},
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      }
+    },
+    "/:id/": {
+      "delete": {
+        "tags": [
+          "Delete"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Excluir o perfil do usuário",
+        "description": "Rota responsável por excluir o perfil do usuário",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Id do usuário"
+          }
+        ],
+        "responses": {
+          "204": {},
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "RequestRegister": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "Nome Completo do usuário",
+            "example": "Novo Usuario"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário",
+            "example": "usuario@email.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do usuário",
+            "example": "123456"
+          }
+        }
+      },
+      "responseRegister": {
+        "type": "object",
+        "properties": {
+          "newUser": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Id do usuário",
+                "format": "uuid",
+                "example": "3140f1f9-bb9b-4cec-b67e-c31bb07f457a"
+              },
+              "fullName": {
+                "type": "string",
+                "description": "Nome Completo do usuário",
+                "example": "Usuario"
+              },
+              "userName": {
+                "type": "string",
+                "description": "Nome de usuário",
+                "example": "Usuario"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email do usuário",
+                "example": "usuario@email.com"
+              },
+              "created_at": {
+                "type": "string",
+                "description": "Data de criação do registro do usuário",
+                "format": "date-time",
+                "example": "2024-08-08T23:49:32.281Z"
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Data de atualização do registro do usuário",
+                "format": "date-time",
+                "example": "2024-08-08T23:49:32.281Z"
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "description": "Token de acesso",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp..."
+          },
+          "message": {
+            "type": "string",
+            "description": "Mensagem de sucesso",
+            "example": "Usuário cadastrado com sucesso"
+          }
+        }
+      },
+      "RequestLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email do usuário",
+            "example": "usuario@email.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do usuário",
+            "example": "123456"
+          }
+        }
+      },
+      "ResponseLogin": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Id do usuário",
+                "format": "uuid",
+                "example": "3140f1f9-bb9b-4cec-b67e-c31bb07f457a"
+              },
+              "fullName": {
+                "type": "string",
+                "description": "Nome Completo do usuário",
+                "example": "Usuario"
+              },
+              "userName": {
+                "type": "string",
+                "description": "Nome de usuário",
+                "example": "Usuario"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email do usuário",
+                "example": "usuario@email.com"
+              },
+              "created_at": {
+                "type": "string",
+                "description": "Data de criação do registro do usuário",
+                "format": "date-time",
+                "example": "2024-06-22T23:49:32.281Z"
+              },
+              "updated_at": {
+                "type": "string",
+                "description": "Data de atualização do registro do usuário",
+                "format": "date-time",
+                "example": "2024-08-08T23:49:32.281Z"
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "description": "Token de acesso",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp..."
+          }
+        }
+      },
+      "RequestUpdateUser": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "description": "Nome Completo do usuário",
+            "example": "Usuario"
+          },
+          "userName": {
+            "type": "string",
+            "description": "Nome de usuário",
+            "example": "Usuario"
+          }
+        }
+      }
+    }
+  }
+}

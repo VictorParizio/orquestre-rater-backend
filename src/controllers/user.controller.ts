@@ -11,11 +11,7 @@ import {
   registerUserService,
   updateUserService,
 } from "../services/user.service";
-import {
-  findUserById,
-  listAllUsers,
-  removeUser,
-} from "../repositories/user.repository";
+import { listAllUsers } from "../repositories/user.repository";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { fullName, email, password } = req.body as CreateUserInput;
@@ -28,7 +24,7 @@ export const registerUser = async (req: Request, res: Response) => {
     );
     return res
       .status(201)
-      .json({ newUser, token, message: "Usuário criado com sucesso" });
+      .json({ newUser, token, message: "Usuário cadastrado com sucesso" });
   } catch (error) {
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json({ message: error.message });
