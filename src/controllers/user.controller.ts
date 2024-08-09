@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ApiError } from "../helpers/ApiError";
 import { CreateUserInput } from "../types/user.types";
-import { registerUserService } from "../services/user.service";
+import { authUserService, registerUserService } from "../services/user.service";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { fullName, email, password } = req.body as CreateUserInput;
@@ -15,6 +15,19 @@ export const registerUser = async (req: Request, res: Response) => {
     return res
       .status(201)
       .json({ newUser, token, message: "Usuário criado com sucesso" });
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Erro interno do servidor" });
+  }
+};
+
+export const authUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const { user, token } = await authUserService(email, password);
+    return res.status(200).json({ user, token });
   } catch (error) {
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json({ message: error.message });

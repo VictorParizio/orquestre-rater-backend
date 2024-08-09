@@ -1,10 +1,22 @@
 import { prisma } from "../config/prisma";
 import { CreateUserInput } from "../types/user.types";
 
-export const findUserByEmail = async (email: string) => {
+export const findEmail = async (email: string) => {
   return await prisma.user.findUnique({
     where: { email },
     select: { email: true },
+  });
+};
+
+export const findUserByEmail = async (email: string) => {
+  return await prisma.user.findUnique({
+    where: { email },
+    select: {
+      id: true,
+      userName: true,
+      email: true,
+      password: true,
+    },
   });
 };
 

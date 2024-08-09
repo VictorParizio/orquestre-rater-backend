@@ -2,8 +2,9 @@ import {
   findUserByEmail,
   findUserByUserName,
   createUser,
+  findEmail,
 } from "../repositories/user.repository";
-import { encryptPassword } from "../utils/encrypt";
+import { comparePassword, encryptPassword } from "../utils/encrypt";
 import { generateToken } from "../utils/jwt";
 import { ApiError } from "../helpers/ApiError";
 
@@ -12,7 +13,7 @@ export const registerUserService = async (
   email: string,
   password: string
 ) => {
-  const emailAlreadyExists = await findUserByEmail(email);
+  const emailAlreadyExists = await findEmail(email);
   if (emailAlreadyExists) {
     throw new ApiError(409, "Usuário ou email já cadastrado.");
   }
@@ -32,4 +33,20 @@ export const registerUserService = async (
   const token = generateToken({ id: newUser.id });
 
   return { newUser, token };
+};
+
+export const authUserService = async (email: string, password: string) => {
+  const user = await findUserByEmail(email);
+  if (!user) {
+    throw new ApiError(404, "Usuário não encontrado");
+  }
+
+  const validPassword = await comparePassword(password, user.password);
+  if (!validPassword) {
+    throw new ApiError(401, "Email ou senha invalido");
+  }
+
+  const { password: _, ...userWithoutPassword } = user;
+  const token = generateToken({ id: user.id });
+  return { user: userWithoutPassword, token };
 };
