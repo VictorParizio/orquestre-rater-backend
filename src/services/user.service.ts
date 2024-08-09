@@ -1,30 +1,35 @@
-import { prisma } from "../config/prisma";
-import { CreateUserInput } from "../controllers/user.controller";
+import {
+  findUserByEmail,
+  findUserByUserName,
+  createUser,
+} from "../repositories/user.repository";
+import { encryptPassword } from "../utils/encrypt";
+import { generateToken } from "../utils/jwt";
+import { ApiError } from "../helpers/ApiError";
 
-export const findUserByEmail = async (email: string) => {
-  return await prisma.user.findUnique({
-    where: { email },
-    select: { email: true },
+export const registerUserService = async (
+  fullName: string,
+  email: string,
+  password: string
+) => {
+  const emailAlreadyExists = await findUserByEmail(email);
+  if (emailAlreadyExists) {
+    throw new ApiError(409, "Usuário ou email já cadastrado.");
+  }
+
+  const userNameAlreadyExists = await findUserByUserName(fullName);
+  if (userNameAlreadyExists) {
+    throw new ApiError(409, "Usuário já cadastrado.");
+  }
+
+  const encryptedPassword = await encryptPassword(password);
+  const newUser = await createUser({
+    fullName,
+    userName: fullName,
+    email,
+    password: encryptedPassword,
   });
-};
+  const token = generateToken({ id: newUser.id });
 
-export const findUserByUserName = async (userName: string) => {
-  return await prisma.user.findUnique({
-    where: { userName },
-    select: { userName: true },
-  });
-};
-
-export const createUser = async (data: CreateUserInput) => {
-  const newUser = await prisma.user.create({
-    data,
-    select: {
-      id: true,
-      fullName: true,
-      userName: true,
-      email: true,
-    },
-  });
-
-  return newUser;
+  return { newUser, token };
 };
