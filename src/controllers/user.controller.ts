@@ -5,6 +5,7 @@ import {
   findUserByUserName,
 } from "../services/user.service";
 import { ApiError } from "../helpers/ApiError";
+import { encryptPassword } from "../utils/encrypt";
 
 export type CreateUserInput = {
   fullName: string;
@@ -27,11 +28,12 @@ export const registerUser = async (req: Request, res: Response) => {
     throw new ApiError(409, "Usuário ou email já cadastrado.");
   }
 
+  const encryptedPassword = await encryptPassword(password);
   const data = {
     fullName,
     userName: fullName,
     email,
-    password,
+    password: encryptedPassword,
   };
   const newUser = await createUser(data);
 
