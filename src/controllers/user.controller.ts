@@ -6,6 +6,7 @@ import {
 } from "../services/user.service";
 import { ApiError } from "../helpers/ApiError";
 import { encryptPassword } from "../utils/encrypt";
+import { generateToken } from "../utils/jwt";
 
 export type CreateUserInput = {
   fullName: string;
@@ -36,6 +37,9 @@ export const registerUser = async (req: Request, res: Response) => {
     password: encryptedPassword,
   };
   const newUser = await createUser(data);
+  const token = generateToken({ id: newUser.id });
 
-  return res.status(201).json({ newUser });
+  return res
+    .status(201)
+    .json({ newUser, token, message: "Usuário criado com sucesso" });
 };
