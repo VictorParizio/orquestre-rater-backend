@@ -3,6 +3,8 @@ import {
   findUserByUserName,
   createUser,
   findEmail,
+  findUserById,
+  updateUserProfile,
 } from "../repositories/user.repository";
 import { comparePassword, encryptPassword } from "../utils/encrypt";
 import { generateToken } from "../utils/jwt";
@@ -49,4 +51,18 @@ export const authUserService = async (email: string, password: string) => {
   const { password: _, ...userWithoutPassword } = user;
   const token = generateToken({ id: user.id });
   return { user: userWithoutPassword, token };
+};
+
+export const updateUserService = async (
+  id: string,
+  fullName: string,
+  userName: string
+) => {
+  const user = await findUserById(id);
+  if (!user) {
+    throw new ApiError(404, "Usuário não encontrado");
+  }
+
+  const updatedUser = await updateUserProfile(id, fullName, userName);
+  return { updatedUser };
 };

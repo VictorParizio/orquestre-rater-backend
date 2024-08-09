@@ -2,10 +2,15 @@ import {
   authUser,
   listUsers,
   registerUser,
+  updateUser,
 } from "../controllers/user.controller";
 import { Router } from "express";
 import { validate } from "../middlewares/validate.middleware";
-import { userAuthSchema, userRegisterSchema } from "../schemas/user.schema";
+import {
+  updateUserSchema,
+  userAuthSchema,
+  userRegisterSchema,
+} from "../schemas/user.schema";
 import { authLimiter } from "../middlewares/limiter.middleware";
 import { verifyUser } from "../middlewares/verifyUser.middleware";
 
@@ -17,3 +22,4 @@ userRouter.post("/auth", authLimiter, validate(userAuthSchema), authUser);
 userRouter.use(verifyUser);
 
 userRouter.get("/", listUsers);
+userRouter.put("/:id", validate(updateUserSchema), updateUser);

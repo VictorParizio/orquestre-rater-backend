@@ -4,3 +4,13 @@ export type CreateUserInput = {
   email: string;
   password: string;
 };
+
+export type AuthUserInput = {
+  email: string;
+  password: string;
+};
+
+export type UpdateUserInput = {
+  fullName: string;
+  userName: string;
+};

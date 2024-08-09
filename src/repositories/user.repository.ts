@@ -8,6 +8,17 @@ export const findEmail = async (email: string) => {
   });
 };
 
+export const findUserById = async (id: string) => {
+  return await prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      fullName: true,
+      userName: true,
+    },
+  });
+};
+
 export const findUserByEmail = async (email: string) => {
   return await prisma.user.findUnique({
     where: { email },
@@ -39,6 +50,21 @@ export const createUser = async (data: CreateUserInput) => {
   });
 
   return newUser;
+};
+
+export const updateUserProfile = async (
+  id: string,
+  fullName: string,
+  userName: string
+) => {
+  const updatedUser = await prisma.user.update({
+    where: { id },
+    data: {
+      fullName,
+      userName,
+    },
+  });
+  return updatedUser;
 };
 
 export const listAllUsers = async () => {
