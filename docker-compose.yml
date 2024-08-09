@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: bitnami/postgresql:latest
+    container_name: orquestre
+    environment:
+      POSTGRES_USER: trilan
+      POSTGRES_PASSWORD: orquestre
+      POSTGRES_DB: orquestre
+    ports:
+      - "5432:5432"
