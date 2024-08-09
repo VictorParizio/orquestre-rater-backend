@@ -40,3 +40,7 @@ export const createUser = async (data: CreateUserInput) => {
 
   return newUser;
 };
+
+export const listAllUsers = async () => {
+  return await prisma.user.findMany();
+};

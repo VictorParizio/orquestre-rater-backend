@@ -1,7 +1,8 @@
+import { AuthUserInput, CreateUserInput } from "../types/user.types";
 import { Request, Response } from "express";
 import { ApiError } from "../helpers/ApiError";
-import { CreateUserInput } from "../types/user.types";
 import { authUserService, registerUserService } from "../services/user.service";
+import { listAllUsers } from "../repositories/user.repository";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { fullName, email, password } = req.body as CreateUserInput;
@@ -24,7 +25,7 @@ export const registerUser = async (req: Request, res: Response) => {
 };
 
 export const authUser = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body as AuthUserInput;
   try {
     const { user, token } = await authUserService(email, password);
     return res.status(200).json({ user, token });
@@ -34,4 +35,9 @@ export const authUser = async (req: Request, res: Response) => {
     }
     return res.status(500).json({ message: "Erro interno do servidor" });
   }
+};
+
+export const listUsers = async (req: Request, res: Response) => {
+  const allsusers = await listAllUsers();
+  return res.status(200).json(allsusers);
 };
