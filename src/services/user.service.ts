@@ -5,6 +5,7 @@ import {
   findEmail,
   findUserById,
   updateUserProfile,
+  removeUser,
 } from "../repositories/user.repository";
 import { comparePassword, encryptPassword } from "../utils/encrypt";
 import { generateToken } from "../utils/jwt";
@@ -65,4 +66,13 @@ export const updateUserService = async (
 
   const updatedUser = await updateUserProfile(id, fullName, userName);
   return { updatedUser };
+};
+
+export const deleteUserService = async (id: string) => {
+  const user = await findUserById(id);
+  if (!user) {
+    throw new ApiError(404, "Usuário não encontrado");
+  }
+
+  return await removeUser(id);
 };

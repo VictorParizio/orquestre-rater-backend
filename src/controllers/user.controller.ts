@@ -7,10 +7,15 @@ import { Request, Response } from "express";
 import { ApiError } from "../helpers/ApiError";
 import {
   authUserService,
+  deleteUserService,
   registerUserService,
   updateUserService,
 } from "../services/user.service";
-import { listAllUsers } from "../repositories/user.repository";
+import {
+  findUserById,
+  listAllUsers,
+  removeUser,
+} from "../repositories/user.repository";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { fullName, email, password } = req.body as CreateUserInput;
@@ -56,7 +61,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
   try {
     await updateUserService(id, fullName, userName);
-    return res.status(200).json();
+    return res.status(204).send();
   } catch (error) {
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json({ message: error.message });
@@ -65,4 +70,16 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
+  try {
+    await deleteUserService(id);
+    return res.status(204).send();
+  } catch (error) {
+    if (error instanceof ApiError) {
+      return res.status(error.statusCode).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Erro interno do servidor" });
+  }
+};

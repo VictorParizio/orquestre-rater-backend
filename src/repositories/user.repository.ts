@@ -70,3 +70,7 @@ export const updateUserProfile = async (
 export const listAllUsers = async () => {
   return await prisma.user.findMany();
 };
+
+export const removeUser = async (id: string) => {
+  return await prisma.user.delete({ where: { id } });
+};
