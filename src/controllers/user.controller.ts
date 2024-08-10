@@ -29,7 +29,7 @@ export const registerUser = async (req: Request, res: Response) => {
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json({ message: error.message });
     }
-    return res.status(500).json({ message: "Erro interno do servidor" });
+    return res.status(500).json({ message: "Erro interno do servidor" + error });
   }
 };
 
