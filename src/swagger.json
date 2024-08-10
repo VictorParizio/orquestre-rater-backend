@@ -93,7 +93,7 @@
         }
       }
     },
-    "/user/:id": {
+    "/user/:{id}": {
       "put": {
         "tags": [
           "Update"
@@ -108,7 +108,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "params",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string",
@@ -135,7 +135,7 @@
         }
       }
     },
-    "/user/:id/": {
+    "/user/:{id}/": {
       "delete": {
         "tags": [
           "Delete"
@@ -150,7 +150,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "params",
+            "in": "path",
             "required": true,
             "schema": {
               "type": "string",
