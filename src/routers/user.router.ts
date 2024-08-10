@@ -18,7 +18,7 @@ import { verifyUser } from "../middlewares/verifyUser.middleware";
 export const userRouter = Router();
 
 userRouter.post("/register", validate(userRegisterSchema), registerUser);
-userRouter.post("/auth", authLimiter, validate(userAuthSchema), authUser);
+userRouter.post("/session", authLimiter, validate(userAuthSchema), authUser);
 
 userRouter.use(verifyUser);
 

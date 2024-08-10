@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/register": {
+    "/user/register": {
       "post": {
         "tags": [
           "Register"
@@ -56,7 +56,7 @@
         }
       }
     },
-    "/auth": {
+    "/user/session": {
       "post": {
         "tags": [
           "Login"
@@ -93,7 +93,7 @@
         }
       }
     },
-    "/:id": {
+    "/user/:id": {
       "put": {
         "tags": [
           "Update"
@@ -135,7 +135,7 @@
         }
       }
     },
-    "/:id/": {
+    "/user/:id/": {
       "delete": {
         "tags": [
           "Delete"
