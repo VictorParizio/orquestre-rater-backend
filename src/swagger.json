@@ -12,7 +12,7 @@
   "basePath": "/",
   "servers": [
     {
-      "url": "https://orquestre-rater-production.up.railway.app/",
+      "url": "https://orquestre-rater-production.up.railway.app",
       "description": "Servidor Remoto"
     },
     {
@@ -93,7 +93,7 @@
         }
       }
     },
-    "/user/:{id}": {
+    "/user/{id}": {
       "put": {
         "tags": [
           "Update"
@@ -135,7 +135,7 @@
         }
       }
     },
-    "/user/:{id}/": {
+    "/user/{id}/": {
       "delete": {
         "tags": [
           "Delete"
