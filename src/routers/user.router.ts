@@ -1,6 +1,7 @@
 import {
   authUser,
   deleteUser,
+  getUser,
   listUsers,
   registerUser,
   updateUser,
@@ -23,5 +24,6 @@ userRouter.post("/session", authLimiter, validate(userAuthSchema), authUser);
 userRouter.use(verifyUser);
 
 userRouter.get("/", listUsers);
+userRouter.get("/:id", getUser);
 userRouter.put("/:id", validate(updateUserSchema), updateUser);
 userRouter.delete("/:id", deleteUser);

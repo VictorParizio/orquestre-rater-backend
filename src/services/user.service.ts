@@ -54,6 +54,15 @@ export const authUserService = async (email: string, password: string) => {
   return { user: userWithoutPassword, token };
 };
 
+export const getUserById = async (id: string) => {
+  const user = await findUserById(id);
+  if (!user) {
+    throw new ApiError(404, "Usuário não encontrado");
+  }
+
+  return await findUserById(id);
+};
+
 export const updateUserService = async (
   id: string,
   fullName: string,

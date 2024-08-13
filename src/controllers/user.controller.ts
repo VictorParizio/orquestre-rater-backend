@@ -8,6 +8,7 @@ import { ApiError } from "../helpers/ApiError";
 import {
   authUserService,
   deleteUserService,
+  getUserById,
   registerUserService,
   updateUserService,
 } from "../services/user.service";
@@ -29,7 +30,7 @@ export const registerUser = async (req: Request, res: Response) => {
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json({ message: error.message });
     }
-    return res.status(500).json({ message: "Erro interno do servidor" + error });
+    return res.status(500).json({ message: "Erro interno do servidor" });
   }
 };
 
@@ -49,6 +50,12 @@ export const authUser = async (req: Request, res: Response) => {
 export const listUsers = async (req: Request, res: Response) => {
   const allsusers = await listAllUsers();
   return res.status(200).json(allsusers);
+};
+
+export const getUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await getUserById(id);
+  return res.status(200).json(user);
 };
 
 export const updateUser = async (req: Request, res: Response) => {
