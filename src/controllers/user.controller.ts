@@ -63,8 +63,8 @@ export const updateUser = async (req: Request, res: Response) => {
   const { fullName, userName } = req.body as UpdateUserInput;
 
   try {
-    await updateUserService(id, fullName, userName);
-    return res.status(204).send();
+    const updatedUser = await updateUserService(id, fullName, userName);
+    return res.status(200).json(updatedUser);
   } catch (error) {
     if (error instanceof ApiError) {
       return res.status(error.statusCode).json({ message: error.message });

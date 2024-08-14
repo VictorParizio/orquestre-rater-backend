@@ -65,6 +65,12 @@ export const updateUserProfile = async (
       fullName,
       userName,
     },
+    select: {
+      id: true,
+      fullName: true,
+      userName: true,
+      email: true,
+    },
   });
   return updatedUser;
 };
