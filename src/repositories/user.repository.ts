@@ -26,6 +26,7 @@ export const findUserByEmail = async (email: string) => {
     select: {
       id: true,
       userName: true,
+      fullName: true,
       email: true,
       password: true,
     },
