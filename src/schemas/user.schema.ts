@@ -12,10 +12,10 @@ export const userRegisterSchema = Joi.object({
     "string.empty": "Digite seu email.",
     "string.email": "O Email deve ser um endereço válido",
   }),
-  password: Joi.string().trim().min(6).required().messages({
+  password: Joi.string().trim().min(8).required().messages({
     "any.required": "O campo Senha é obrigatório.",
     "string.empty": "Digite sua senha",
-    "string.min": "A Senha deve conter ao menos 6 caracteres",
+    "string.min": "A Senha deve conter ao menos 8 caracteres",
   }),
 });
 
@@ -25,7 +25,7 @@ export const userAuthSchema = Joi.object({
     "string.empty": "Digite seu email.",
     "string.email": "O Email deve ser um endereço válido",
   }),
-  password: Joi.string().trim().min(6).required().messages({
+  password: Joi.string().trim().required().messages({
     "any.required": "O campo Senha é obrigatório.",
     "string.empty": "Digite sua senha",
   }),
