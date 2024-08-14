@@ -302,12 +302,6 @@
       "RequestUpdateUser": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string",
-            "description": "Id do usuário",
-            "format": "uuid",
-            "example": "3140f1f9-bb9b-4cec-b67e-c31bb07f457a"
-          },
           "fullName": {
             "type": "string",
             "description": "Nome Completo do usuário",
