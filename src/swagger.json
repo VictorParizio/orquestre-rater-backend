@@ -45,7 +45,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "$ref": "#/components/schemas/responseRegister"
+                  "$ref": "#/components/schemas/ResponseRegister"
                 }
               }
             }
@@ -128,7 +128,17 @@
           }
         },
         "responses": {
-          "204": {},
+          "200": {
+            "description": "Usuário atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/ResponseUpdateUser"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Usuário não encontrado"
           }
@@ -193,11 +203,11 @@
           "password": {
             "type": "string",
             "description": "Senha do usuário",
-            "example": "123456"
+            "example": "12345678"
           }
         }
       },
-      "responseRegister": {
+      "ResponseRegister": {
         "type": "object",
         "properties": {
           "newUser": {
@@ -223,18 +233,6 @@
                 "type": "string",
                 "description": "Email do usuário",
                 "example": "usuario@email.com"
-              },
-              "created_at": {
-                "type": "string",
-                "description": "Data de criação do registro do usuário",
-                "format": "date-time",
-                "example": "2024-08-08T23:49:32.281Z"
-              },
-              "updated_at": {
-                "type": "string",
-                "description": "Data de atualização do registro do usuário",
-                "format": "date-time",
-                "example": "2024-08-08T23:49:32.281Z"
               }
             }
           },
@@ -261,7 +259,7 @@
           "password": {
             "type": "string",
             "description": "Senha do usuário",
-            "example": "123456"
+            "example": "12345678"
           }
         }
       },
@@ -291,18 +289,6 @@
                 "type": "string",
                 "description": "Email do usuário",
                 "example": "usuario@email.com"
-              },
-              "created_at": {
-                "type": "string",
-                "description": "Data de criação do registro do usuário",
-                "format": "date-time",
-                "example": "2024-06-22T23:49:32.281Z"
-              },
-              "updated_at": {
-                "type": "string",
-                "description": "Data de atualização do registro do usuário",
-                "format": "date-time",
-                "example": "2024-08-08T23:49:32.281Z"
               }
             }
           },
@@ -316,6 +302,12 @@
       "RequestUpdateUser": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "description": "Id do usuário",
+            "format": "uuid",
+            "example": "3140f1f9-bb9b-4cec-b67e-c31bb07f457a"
+          },
           "fullName": {
             "type": "string",
             "description": "Nome Completo do usuário",
@@ -325,6 +317,42 @@
             "type": "string",
             "description": "Nome de usuário",
             "example": "Usuario"
+          }
+        }
+      },
+      "ResponseUpdateUser": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Id do usuário",
+                "format": "uuid",
+                "example": "3140f1f9-bb9b-4cec-b67e-c31bb07f457a"
+              },
+              "fullName": {
+                "type": "string",
+                "description": "Nome Completo do usuário",
+                "example": "Usuario"
+              },
+              "userName": {
+                "type": "string",
+                "description": "Nome de usuário",
+                "example": "Usuario"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email do usuário",
+                "example": "usuario@email.com"
+              }
+            }
+          },
+          "token": {
+            "type": "string",
+            "description": "Token de acesso",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp..."
           }
         }
       }
